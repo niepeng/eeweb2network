@@ -1,6 +1,6 @@
 package com.chengqianyun.eeweb2network.test;
 
-import com.chengqianyun.eeweb2network.core.Client;
+import com.chengqianyun.eeweb2network.common.util.SystemClock;
 import com.chengqianyun.eeweb2network.core.ServerNormal;
 import java.io.IOException;
 import java.util.Random;
@@ -33,22 +33,28 @@ public class TestSocket {
     //运行客户端
     char operators[] = {'+','-','*','/'};
     Random random = new Random(System.currentTimeMillis());
-    new Thread(new Runnable() {
-      @SuppressWarnings("static-access")
-      @Override
-      public void run() {
-        while(true) {
-          //随机产生算术表达式
-          String expression = random.nextInt(10) + "" + operators[random.nextInt(4)] + (random.nextInt(10) + 1);
-          Client.send(expression);
-          try {
-            Thread.currentThread().sleep(random.nextInt(1000));
-          } catch (InterruptedException e) {
-            e.printStackTrace();
+
+    for (int i = 1; i < 4; i++) {
+      final String address = String.valueOf(i);
+      SystemClock.sleepRandom(2000, 5000);
+      new Thread(new Runnable() {
+        @SuppressWarnings("static-access")
+        @Override
+        public void run() {
+          Client  client = new Client(address);
+
+          while(true) {
+            //随机产生算术表达式
+            String expression = random.nextInt(10) + "" + operators[random.nextInt(4)] + (random.nextInt(10) + 1);
+            client.send(expression);
           }
         }
-      }
-    }).start();
+      }).start();
+    }
+
+    SystemClock.sleep(1000 * 3600);
   }
+
+
 
 }

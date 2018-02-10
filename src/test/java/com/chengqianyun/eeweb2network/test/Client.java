@@ -1,6 +1,9 @@
-package com.chengqianyun.eeweb2network.core;
+package com.chengqianyun.eeweb2network.test;
 
 import com.chengqianyun.eeweb2network.common.util.IoUtil;
+import com.chengqianyun.eeweb2network.common.util.RandomUtil;
+import com.chengqianyun.eeweb2network.core.InstructionManager;
+import com.chengqianyun.eeweb2network.core.ServerNormal;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;  
@@ -19,26 +22,51 @@ public class Client {
 
     private static String DEFAULT_SERVER_IP = "127.0.0.1";
 
-    public static void send(String expression) {
+    private String address;
+
+    Socket socket;
+    BufferedReader in = null;
+    PrintWriter out = null;
+
+    public Client(String address) {
+        this.address = address;
+    }
+
+
+
+    public void send(String expression) {
         send(DEFAULT_SERVER_PORT, expression);
     }
 
-    public static void send(int port, String expression) {
+    public  void send(int port, String expression) {
         System.out.println("客户端发送消息：" + expression);
-        Socket socket = null;
-        BufferedReader in = null;
-        PrintWriter out = null;
         try {
             socket = new Socket(DEFAULT_SERVER_IP, port);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
             out.println(expression);
             System.out.println("客户端收到结果为：" + in.readLine());
-//            log.info("___结果为：" + in.readLine());
+
+
+            while(true) {
+                String response = in.readLine();
+                // 获取地址指令
+                if(InstructionManager.genGetAddress().equalsIgnoreCase(response)) {
+                    out.println(address);
+                    continue;
+                }
+
+                // 获取设备数据
+                if(InstructionManager.genGetInfo(address).equalsIgnoreCase(address)) {
+                    out.println(address+ ",wen=" + RandomUtil.random(100, 300) + ",shi=" + RandomUtil.random(500, 800));
+                    continue;
+                }
+
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            //一下必要的清理工作  
             IoUtil.close(in);
             IoUtil.close(out);
             IoUtil.close(socket);
