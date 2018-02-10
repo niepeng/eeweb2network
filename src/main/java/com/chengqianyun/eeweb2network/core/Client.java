@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Client {
 
-    //默认的端口号  
+    //默认的端口号
     private static int DEFAULT_SERVER_PORT = ServerNormal.DEFAULT_PORT;
 
     private static String DEFAULT_SERVER_IP = "127.0.0.1";
