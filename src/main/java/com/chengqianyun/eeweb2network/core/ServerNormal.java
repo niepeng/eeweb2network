@@ -1,5 +1,6 @@
 package com.chengqianyun.eeweb2network.core;
 
+import com.chengqianyun.eeweb2network.common.util.PrintUtil;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -39,6 +40,10 @@ public final class ServerNormal {
              */
             while (true) {
                 Socket socket = server.accept();
+              String ip = socket.getInetAddress().getHostAddress();
+              int connectPort = socket.getPort();
+              String ipAndPort = ip + ":" + connectPort;
+              PrintUtil.println("handle info, " + ipAndPort);
                 /**
                  * 当有新的客户端接入时，会执行下面的代码,然后创建一个新的线程处理这条Socket链路
                  */

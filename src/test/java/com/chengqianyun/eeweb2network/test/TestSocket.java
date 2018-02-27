@@ -34,23 +34,23 @@ public class TestSocket {
     char operators[] = {'+','-','*','/'};
     Random random = new Random(System.currentTimeMillis());
 
-    for (int i = 1; i < 4; i++) {
-      final String address = String.valueOf(i);
-      SystemClock.sleepRandom(2000, 5000);
-      new Thread(new Runnable() {
-        @SuppressWarnings("static-access")
-        @Override
-        public void run() {
-          Client  client = new Client(address);
-
-          while(true) {
-            //随机产生算术表达式
-            String expression = random.nextInt(10) + "" + operators[random.nextInt(4)] + (random.nextInt(10) + 1);
-            client.send(expression);
-          }
-        }
-      }).start();
-    }
+//    for (int i = 1; i < 4; i++) {
+//      final String address = String.valueOf(i);
+//      SystemClock.sleepRandom(2000, 5000);
+//      new Thread(new Runnable() {
+//        @SuppressWarnings("static-access")
+//        @Override
+//        public void run() {
+//          Client  client = new Client(address);
+//
+//          while(true) {
+//            //随机产生算术表达式
+//            String expression = random.nextInt(10) + "" + operators[random.nextInt(4)] + (random.nextInt(10) + 1);
+//            client.send(expression);
+//          }
+//        }
+//      }).start();
+//    }
 
     SystemClock.sleep(1000 * 3600);
   }

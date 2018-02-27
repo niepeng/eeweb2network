@@ -1,0 +1,40 @@
+
+-- 字节数组string
+FunctionUnit.bytesToHexString(rsByte)
+
+--  crc 校验码
+CalcCRC.getCrc16(rs)
+
+
+-- Level_Second_Serial 类
+
+/**
+	 * @describe: 根据仪器地址,发送获取仪器温湿度的串口命令<br>
+	 * @param address 仪器地址
+	 * @param funCode 功能码
+	 * @param memHigh 寄存器地址:高位
+	 * @param menLow  寄存器地址:低位
+	 * @param dataHigh 数据长度:高位
+	 * @param dataLow  数据长度:低位
+	 * @date:2009-11-5
+	 */
+	public void writeByte(int address, int funCode, int memHigh, int menLow, int dataHigh, int dataLow,Socket socket) throws Exception{
+		char[] rs = {(char)address, (char)funCode, (char)memHigh, (char)menLow, (char)dataHigh, (char)dataLow, 0, 0};
+		rs = CalcCRC.getCrc16(rs);
+//		System.out.println(FunctionUnit.bytesToHexString(rs));
+		final_Level.writePort(rs, address, socket);
+//		System.out.println(FunctionUnit.bytesToHexString(readAddress));
+//		final_Level.writePort(readAddress, address, socket);
+		//停止，以保证数据发送成功
+		Thread.sleep(frameInterval);
+	}
+
+
+// 读取设备的地址
+	public static char[] readAddress = {
+		0xFB,0x67,0x06,0x00,0x00,0x00,0x00,0x00,0x00,0x5C,0x0A
+	};
+
+
+
+
