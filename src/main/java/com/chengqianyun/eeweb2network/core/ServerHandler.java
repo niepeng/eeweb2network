@@ -1,5 +1,6 @@
 package com.chengqianyun.eeweb2network.core;
 
+import com.chengqianyun.eeweb2network.common.enums.DataStatusEnum;
 import com.chengqianyun.eeweb2network.common.util.CalcCRC;
 import com.chengqianyun.eeweb2network.common.util.Char55util;
 import com.chengqianyun.eeweb2network.common.util.DateUtil;
@@ -43,7 +44,7 @@ public class ServerHandler implements Runnable {
         PrintWriter out = null;
         try {
             in = socket.getInputStream();
-            out = new PrintWriter(socket.getOutputStream(), true);
+//            out = new PrintWriter(socket.getOutputStream(), true);
             String expression;
             String result;
 
@@ -61,15 +62,42 @@ public class ServerHandler implements Runnable {
 
             char[] readData2 = read(in);
             String tmpData2 = FunctionUnit.bytesToHexString(readData2);
-            System.out.println("tmpData2==>(" + tmpData2 + ")");
             readData2 = Char55util.dealwith55NewV2(readData2);
             System.out.println("tmpData2==>(" + tmpData2 + ")");
             int address = readAddress(readData2);
             PrintUtil.println("address====>" + address);
 
             //  3.持续发送和获取数据(一段时间发送和接收),如果连接断了,释放当前链路,重新尝试
+            int dataLen = 4;
             while(true) {
-                SystemClock.sleep(10000);
+                char[] writeData = InstructionManager.genGetInfo(address, dataLen);
+                PrintUtil.println("发送获取数据指令:" + FunctionUnit.bytesToHexString(writeData));
+                writePort(writeData, socket);
+                SystemClock.sleep(5000);
+                char[] readData3 = read(in);
+                PrintUtil.println("接收到数据结果====>" + FunctionUnit.bytesToHexString(readData3));
+                readData3 = Char55util.dealwith55NewV2(readData3);
+                if(!DataStatusEnum.isSuccess(checkReturn(readData3, address))) {
+                   continue;
+                }
+
+                int humi = 0, temp = 0, dew = 0, power = 0;
+                if (dataLen >= 1) {
+                    humi = (int) ((readData3[3] << 8) + readData3[4]); //  equip.getHumiDev() * 100
+                }
+
+                if (dataLen >= 2) {
+                    temp = (int) (((readData3[5] << 8) + readData3[6] - 27315)); // equip.getTempDev() * 100
+                }
+
+                if (dataLen >= 3) {
+                    dew = ((readData3[7] << 8) + readData3[8] - 27315);
+                }
+
+                if (dataLen >= 4) {
+                    power = (readData3[9] << 8) + readData3[10];
+                }
+                PrintUtil.println("接收到数据结果解析==>humi=" + humi + ",temp=" + temp + ",dew=" + dew + ", power=" + power);
             }
 
 //            String bizData;
@@ -151,6 +179,40 @@ public class ServerHandler implements Runnable {
         out.write(b);
         out.flush();
     }
+
+    /**
+     * @describe: 检查读取的值: address:-1(不检查头字节)
+     * @param rsByte 待检查的char数组
+     * @param address 用来判断地址是否一致. 不需要时,赋值为 -1
+     * @return: 返回CRC检查结果. 只有返回 DataStatusEnum.right_frame ,为正常成功的帧,其他都为失败帧
+     */
+    public DataStatusEnum checkReturn(char[] rsByte, int address) {
+        boolean rsOut = true;
+        DataStatusEnum result = DataStatusEnum.right_frame;
+
+        //帧判断
+        if (rsByte == null) {
+            //判断是否丢帧
+            result = DataStatusEnum.lose_frame;
+        } else {
+            if (address != -1) {
+                //检测地址头
+                rsOut = rsByte[0] == address;
+            }
+            if (rsOut == false) {
+                result = DataStatusEnum.wrong_address;
+            } else {
+                //对接收的数据进行crc校验，检查是否通讯故障
+                rsOut = CalcCRC.checkCrc16(rsByte);
+                if (rsOut == false) {
+                    result = DataStatusEnum.wrong_frame;
+                }
+            }
+        }
+        return result;
+    }
+
+
 
 
     // 读取设备的地址

@@ -57,10 +57,10 @@ public class Client {
                 }
 
                 // 获取设备数据
-                if(InstructionManager.genGetInfo(address).equalsIgnoreCase(address)) {
-                    out.println(address+ ",wen=" + RandomUtil.random(100, 300) + ",shi=" + RandomUtil.random(500, 800));
-                    continue;
-                }
+//                if(InstructionManager.genGetInfo(address).equalsIgnoreCase(address)) {
+//                    out.println(address+ ",wen=" + RandomUtil.random(100, 300) + ",shi=" + RandomUtil.random(500, 800));
+//                    continue;
+//                }
 
             }
 

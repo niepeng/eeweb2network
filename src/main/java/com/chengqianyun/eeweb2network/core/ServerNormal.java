@@ -39,15 +39,16 @@ public final class ServerNormal {
              * 通过无线循环监听客户端连接, 如果没有客户端接入，将阻塞在accept操作上。
              */
             while (true) {
-                Socket socket = server.accept();
+              Socket socket = server.accept();
+              socket.setSoTimeout(5000);
               String ip = socket.getInetAddress().getHostAddress();
               int connectPort = socket.getPort();
               String ipAndPort = ip + ":" + connectPort;
               PrintUtil.println("handle info, " + ipAndPort);
-                /**
-                 * 当有新的客户端接入时，会执行下面的代码,然后创建一个新的线程处理这条Socket链路
-                 */
-                serverHandle(socket);
+              /**
+               * 当有新的客户端接入时，会执行下面的代码,然后创建一个新的线程处理这条Socket链路
+               */
+              serverHandle(socket);
             }
         } finally {
             //一些必要的清理工作  

@@ -62,8 +62,8 @@ public class ServerHandlerTest implements Runnable {
             //  3.持续发送和获取数据(一段时间发送和接收),如果连接断了,释放当前链路,重新尝试
             String bizData;
             while(true) {
-                System.out.println(DateUtil.format(new Date()) + "  发送获取数据指令:" + InstructionManager.genGetInfo(address));
-                out.println(InstructionManager.genGetInfo(address));
+//                System.out.println(DateUtil.format(new Date()) + "  发送获取数据指令:" + InstructionManager.genGetInfo(address));
+//                out.println(InstructionManager.genGetInfo(address));
                 if ((expression = in.readLine()) == null) {
                     return;
                 }

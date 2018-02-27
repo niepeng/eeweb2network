@@ -1,6 +1,8 @@
 package com.chengqianyun.eeweb2network.core;
 
 
+import com.chengqianyun.eeweb2network.common.util.CalcCRC;
+
 /**
  * 所有生成和解析指令方法结合
  *
@@ -31,12 +33,15 @@ public class InstructionManager {
 
   // -------------------------------------------------------------------------------------
   /**
-   * 生成获取设备信息的指令
-   * @param address
+   * 生成获取设备信息的指令(根据仪器地址发送获取 温度,湿度和露点的命令)
+   * @param address 仪器地址
+   * @param dataLen (3:温度,湿度,露点4个数据)(4:温度,湿度,露点,电压4个数据)
    * @return
    */
-  public static String genGetInfo(String address) {
-    return address;
+  public static char[] genGetInfo(int address, int dataLen) {
+    char[] rs = {(char) address, (char) 0x03, (char) 0, (char) 0, (char) 0, (char) dataLen, 0, 0};
+    rs = CalcCRC.getCrc16(rs);
+    return rs;
   }
 
   /**
