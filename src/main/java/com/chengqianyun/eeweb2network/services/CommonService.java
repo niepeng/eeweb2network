@@ -9,6 +9,6 @@ import org.springframework.stereotype.Service;
  * @date 18/2/28
  */
 @Service
-public class CommonService {
+public class CommonService extends BaseService {
 
 }

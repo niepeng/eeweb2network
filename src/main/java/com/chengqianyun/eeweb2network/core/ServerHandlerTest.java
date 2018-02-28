@@ -68,8 +68,8 @@ public class ServerHandlerTest implements Runnable {
                 if ((expression = in.readLine()) == null) {
                     return;
                 }
-                bizData = InstructionManager.parseGetInfo(expression);
-                System.out.println(DateUtil.format(new Date()) + "  处理数据:" + bizData);
+//                bizData = InstructionManager.parseGetInfo(expression);
+//                System.out.println(DateUtil.format(new Date()) + "  处理数据:" + bizData);
                 SystemClock.sleep(4 * 1000);
             }
 

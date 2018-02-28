@@ -6,7 +6,9 @@ import com.chengqianyun.eeweb2network.common.util.Char55util;
 import com.chengqianyun.eeweb2network.common.util.FunctionUnit;
 import com.chengqianyun.eeweb2network.common.util.IoUtil;
 import com.chengqianyun.eeweb2network.common.util.SystemClock;
+import com.chengqianyun.eeweb2network.config.SpringHelper;
 import com.chengqianyun.eeweb2network.dao.EquipDataDO;
+import com.chengqianyun.eeweb2network.dao.mapper.EquipDataDOMapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -62,6 +64,7 @@ public class ServerHandler implements Runnable {
       //  3.持续发送和获取数据(一段时间发送和接收),如果连接断了,释放当前链路,重新尝试
       int dataLen = 4;
       DataStatusEnum tmpDataStatusEnum = null;
+      EquipDataDOMapper equipDataDOMapper = SpringHelper.getBean("equipDataDOMapper", EquipDataDOMapper.class);
       while (true) {
         char[] writeData = InstructionManager.genGetInfo(address, dataLen);
         log.info("发送获取数据指令:" + FunctionUnit.bytesToHexString(writeData));
@@ -78,7 +81,7 @@ public class ServerHandler implements Runnable {
 
         EquipDataDO data = InstructionManager.parseGetInfo(readData3, dataLen, address);
         log.info("接收到数据结果解析==>" + data.toString());
-
+        equipDataDOMapper.insert(data);
       }
     } catch (Exception e) {
       log.error("ServerHandler.runError", e);
