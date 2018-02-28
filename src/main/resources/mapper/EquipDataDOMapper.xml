@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chengqianyun.eeweb2network.dao.mapper.EquipDataDOMapper" >
+  <resultMap id="BaseResultMap" type="com.chengqianyun.eeweb2network.dao.EquipDataDO" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="address" property="address" jdbcType="INTEGER" />
+    <result column="equip_id" property="equipId" jdbcType="BIGINT" />
+    <result column="huimi" property="huimi" jdbcType="INTEGER" />
+    <result column="temp" property="temp" jdbcType="INTEGER" />
+    <result column="dew" property="dew" jdbcType="INTEGER" />
+    <result column="power" property="power" jdbcType="INTEGER" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="updated_by" property="updatedBy" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+   id, address, equip_id, huimi, temp, dew, power, created_at, updated_at, created_by, updated_by
+  </sql>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_equip_data
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.chengqianyun.eeweb2network.dao.EquipDataDO" useGeneratedKeys="true" keyProperty="id" >
+    insert into t_equip_data (address, equip_id, huimi,
+      temp, dew, power, created_at, 
+      updated_at, created_by, updated_by
+      )
+    values (#{address,jdbcType=INTEGER}, #{equipId,jdbcType=BIGINT}, #{huimi,jdbcType=INTEGER}, 
+      #{temp,jdbcType=INTEGER}, #{dew,jdbcType=INTEGER}, #{power,jdbcType=INTEGER}, now(),
+      now(), #{createdBy,jdbcType=VARCHAR}, #{updatedBy,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.chengqianyun.eeweb2network.dao.EquipDataDO" >
+    update t_equip_data
+    set address = #{address,jdbcType=INTEGER},
+      equip_id = #{equipId,jdbcType=BIGINT},
+      huimi = #{huimi,jdbcType=INTEGER},
+      temp = #{temp,jdbcType=INTEGER},
+      dew = #{dew,jdbcType=INTEGER},
+      power = #{power,jdbcType=INTEGER},
+      updated_at = now(),
+      updated_by = #{updatedBy,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List"/>
+    from t_equip_data
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List"/>
+    from t_equip_data
+  </select>
+</mapper>
