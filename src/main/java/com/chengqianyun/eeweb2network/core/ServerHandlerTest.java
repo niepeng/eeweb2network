@@ -55,7 +55,8 @@ public class ServerHandlerTest implements Runnable {
             if ((expression = in.readLine()) == null) {
                 return;
             }
-            this.address = InstructionManager.parseGetAddress(expression);
+            this.address = null;
+//            this.address = InstructionManager.parseGetAddress(expression);
             System.out.println(DateUtil.format(new Date()) + "  接受到获取地址的结果：" + expression + ",地址配合得到:" + address);
 
 

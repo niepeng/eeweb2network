@@ -51,10 +51,10 @@ public class Client {
             while(true) {
                 String response = in.readLine();
                 // 获取地址指令
-                if(InstructionManager.genGetAddress().equalsIgnoreCase(response)) {
-                    out.println(address);
-                    continue;
-                }
+//                if(InstructionManager.genGetAddress().equalsIgnoreCase(response)) {
+//                    out.println(address);
+//                    continue;
+//                }
 
                 // 获取设备数据
 //                if(InstructionManager.genGetInfo(address).equalsIgnoreCase(address)) {
