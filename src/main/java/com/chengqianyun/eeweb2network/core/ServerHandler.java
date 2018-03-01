@@ -69,7 +69,7 @@ public class ServerHandler implements Runnable {
         char[] writeData = InstructionManager.genGetInfo(address, dataLen);
         log.info("发送获取数据指令:" + FunctionUnit.bytesToHexString(writeData));
         writePort(writeData, socket);
-        SystemClock.sleep(5000);
+        SystemClock.sleep(20000);
         char[] readData3 = read(in);
         log.info("接收到数据结果====>" + FunctionUnit.bytesToHexString(readData3));
         readData3 = Char55util.dealwith55NewV2(readData3);
