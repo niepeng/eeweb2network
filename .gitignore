@@ -8,4 +8,5 @@ logs/
 src/main/resources/rebel.xml
 src/main/resources/.DS_Store
 src/main/webapp/.DS_Store
+data.log
 
