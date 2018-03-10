@@ -16,6 +16,11 @@ public final class ServerNormal {
    */
   public static final int FAIL_TIMES_RETURN = 2;
 
+  /**
+   * 获取数据周期:单位秒
+   */
+  public static final int GET_DATA_CYCLE = 20;
+
 
   /**
    * 单例的ServerSocket

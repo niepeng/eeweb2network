@@ -161,6 +161,9 @@ public class DateUtil {
   }
 
   public static Date parseNoException(String input, String fmt) {
+    if(input == null) {
+      return null;
+    }
     SimpleDateFormat sdf = new SimpleDateFormat(fmt);
     try {
       return sdf.parse(input);
@@ -179,6 +182,7 @@ public class DateUtil {
     c.set(Calendar.HOUR_OF_DAY, 23);
     c.set(Calendar.MINUTE, 59);
     c.set(Calendar.SECOND, 59);
+    c.set(Calendar.MILLISECOND, 0);
     return c.getTime();
   }
 
@@ -191,6 +195,7 @@ public class DateUtil {
     c.set(Calendar.HOUR_OF_DAY, 0);
     c.set(Calendar.MINUTE, 0);
     c.set(Calendar.SECOND, 0);
+    c.set(Calendar.MILLISECOND, 0);
     return c.getTime();
   }
 

@@ -46,15 +46,32 @@
       updated_by = #{updatedBy,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select
     <include refid="Base_Column_List"/>
     from t_equip_data
     where id = #{id,jdbcType=BIGINT}
   </select>
+
   <select id="selectAll" resultMap="BaseResultMap" >
     select
     <include refid="Base_Column_List"/>
     from t_equip_data
   </select>
+
+  <select id="getByTimes" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List"/>
+    from t_equip_data
+    where address =  #{address,jdbcType=INTEGER}
+    <if test="startTime != null">
+      AND  created_at >= #{startTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endTime != null">
+      AND <![CDATA[  created_at <= #{endTime,jdbcType=TIMESTAMP} ]]>
+    </if>
+    order by id asc
+  </select>
+
 </mapper>

@@ -54,4 +54,12 @@ public class EquipDataDO {
      */
     private String updatedBy;
 
+
+    // ----------- 扩展属性  ---------------------
+
+    private String createdAtStr;
+
+
+    // ----------- 扩展方法  ----------------------
+
 }

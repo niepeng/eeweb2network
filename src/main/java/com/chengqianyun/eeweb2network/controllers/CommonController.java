@@ -3,6 +3,7 @@ package com.chengqianyun.eeweb2network.controllers;
 
 import com.chengqianyun.eeweb2network.common.bean.req.CheckDataReq;
 import com.chengqianyun.eeweb2network.common.bean.resp.CheckDataResp;
+import com.chengqianyun.eeweb2network.dao.EquipDataDO;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import javax.validation.Valid;
@@ -32,7 +33,7 @@ public class CommonController extends BaseController {
 
   @ApiOperation("检查设备丢失数据时间点")
   @RequestMapping(value = "/checkDeviceData", method = RequestMethod.POST)
-  public List<CheckDataResp> checkDeviceData(@RequestBody @Valid CheckDataReq checkDataReq) {
+  public List<EquipDataDO> checkDeviceData(@RequestBody @Valid CheckDataReq checkDataReq) {
     return commonService.checkDeviceData(checkDataReq);
   }
 
