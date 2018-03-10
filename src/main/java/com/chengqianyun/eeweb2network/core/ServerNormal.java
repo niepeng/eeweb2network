@@ -9,7 +9,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class ServerNormal {
 
-    public static int DEFAULT_PORT = 8234;
+  public static int DEFAULT_PORT = 8234;
+
+  /**
+   * 连续读取数据失败多少次,认为是当前socket无效了
+   */
+  public static final int FAIL_TIMES_RETURN = 2;
+
 
   /**
    * 单例的ServerSocket

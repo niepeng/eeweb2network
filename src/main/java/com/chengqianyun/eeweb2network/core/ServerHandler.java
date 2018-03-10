@@ -65,6 +65,7 @@ public class ServerHandler implements Runnable {
       int dataLen = 4;
       DataStatusEnum tmpDataStatusEnum = null;
       EquipDataDOMapper equipDataDOMapper = SpringHelper.getBean("equipDataDOMapper", EquipDataDOMapper.class);
+      int failTimes = 0;
       while (true) {
         char[] writeData = InstructionManager.genGetInfo(address, dataLen);
         log.info("发送获取数据指令:" + FunctionUnit.bytesToHexString(writeData));
@@ -75,10 +76,14 @@ public class ServerHandler implements Runnable {
         readData3 = Char55util.dealwith55NewV2(readData3);
         tmpDataStatusEnum = checkReturn(readData3, address);
         if (!DataStatusEnum.isSuccess(tmpDataStatusEnum)) {
+          failTimes++;
           log.info("接收到数据有问题:" + tmpDataStatusEnum.getMeaning());
+          if (failTimes >= ServerNormal.FAIL_TIMES_RETURN) {
+            break;
+          }
           continue;
         }
-
+        failTimes = 0;
         EquipDataDO data = InstructionManager.parseGetInfo(readData3, dataLen, address);
         log.info("接收到数据结果解析==>" + data.toString());
         equipDataDOMapper.insert(data);

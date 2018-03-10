@@ -1,4 +1,7 @@
 
+CREATE DATABASE `eeweb2`;
+use `eeweb2`;
+
 
 CREATE TABLE `t_equip_data` (
 `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -13,7 +16,8 @@ CREATE TABLE `t_equip_data` (
 `created_by` varchar(45) DEFAULT NULL comment '创建人',
 `updated_by` varchar(45) DEFAULT NULL comment '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 comment='设备获取原始数据记录';
+-- ) ENGINE=InnoDB  AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 comment='设备获取原始数据记录';
+) ENGINE=InnoDB  AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 comment='设备获取原始数据记录';
 
 
 -- `subject_name` varchar(32) DEFAULT NULL COMMENT '标的名称',
