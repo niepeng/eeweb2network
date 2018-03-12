@@ -31,4 +31,5 @@ CalcCRC.getCrc16(rs)
 
 
 
-
+// 本地文件参考:
+// /Users/lsb/data/tmp/tmpcode/my-spring-boot
